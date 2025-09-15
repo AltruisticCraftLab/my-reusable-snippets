@@ -1,5 +1,15 @@
 "use client";
 
+// ---------------------- Logo Component ----------------------
+// Flexible logo with automatic fallbacks for SaaS applications
+//
+// Environment variables:
+// - NEXT_PUBLIC_BRAND_NAME: Your brand name (fallback: "YourSaaS")
+// - NEXT_PUBLIC_LOGO_PATH: Path to logo image (optional)
+//
+// Usage: <Logo size="md" showText={true} />
+// ---------------------- Logo Component ----------------------
+
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -7,25 +17,23 @@ import { useState } from "react";
 
 interface LogoProps {
   className?: string;
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg";
   showText?: boolean;
-  priority?: boolean; // for Next.js Image optimization
+  priority?: boolean;
 }
 
-// Simple configuration - just set these env vars
+// Configuration
 const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "YourSaaS";
 const LOGO_PATH = process.env.NEXT_PUBLIC_LOGO_PATH || null;
 
-// Simple size mapping
+// Size mapping
 const sizes = {
-  xs: { icon: "h-5 w-5", text: "text-base font-semibold" },
   sm: { icon: "h-6 w-6", text: "text-lg font-semibold" },
   md: { icon: "h-8 w-8", text: "text-xl font-bold" },
   lg: { icon: "h-10 w-10", text: "text-2xl font-bold" },
-  xl: { icon: "h-12 w-12", text: "text-3xl font-bold" },
 };
 
-// Simple fallback icon
+// Fallback icon when no logo provided
 const DefaultIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
@@ -37,6 +45,9 @@ const DefaultIcon = ({ className }: { className?: string }) => (
   </div>
 );
 
+/**
+ * Logo component with automatic fallbacks
+ */
 export function Logo({
   className,
   size = "md",
@@ -54,7 +65,6 @@ export function Logo({
       )}
       aria-label={`${BRAND_NAME} home page`}
     >
-      {/* Logo or fallback */}
       {LOGO_PATH && !imageError ? (
         <div className={cn("relative", sizes[size].icon)}>
           <Image
@@ -62,16 +72,15 @@ export function Logo({
             alt={`${BRAND_NAME} logo`}
             fill
             className="object-contain"
-            sizes={size === "xl" || size === "lg" ? "48px" : "40px"}
+            sizes={size === "lg" ? "48px" : "32px"}
             priority={priority}
-            onError={() => setImageError(true)} // Add this line
+            onError={() => setImageError(true)}
           />
         </div>
       ) : (
         <DefaultIcon className={sizes[size].icon} />
       )}
 
-      {/* Brand name */}
       {showText && (
         <span className={cn("text-foreground", sizes[size].text)}>
           {BRAND_NAME}
