@@ -1,15 +1,5 @@
 "use client";
 
-// ---------------------- Logo Component ----------------------
-// Flexible logo with automatic fallbacks for SaaS applications
-//
-// Environment variables:
-// - NEXT_PUBLIC_BRAND_NAME: Your brand name (fallback: "YourSaaS")
-// - NEXT_PUBLIC_LOGO_PATH: Path to logo image (optional)
-//
-// Usage: <Logo size="md" showText={true} />
-// ---------------------- Logo Component ----------------------
-
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -20,20 +10,18 @@ interface LogoProps {
   size?: "sm" | "md" | "lg";
   showText?: boolean;
   priority?: boolean;
+  href?: string;
 }
 
-// Configuration
 const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "YourSaaS";
 const LOGO_PATH = process.env.NEXT_PUBLIC_LOGO_PATH || null;
 
-// Size mapping
 const sizes = {
-  sm: { icon: "h-6 w-6", text: "text-lg font-semibold" },
-  md: { icon: "h-8 w-8", text: "text-xl font-bold" },
-  lg: { icon: "h-10 w-10", text: "text-2xl font-bold" },
+  sm: { icon: "h-6 w-6", text: "text-lg font-semibold", imageSize: "24px" },
+  md: { icon: "h-8 w-8", text: "text-xl font-bold", imageSize: "32px" },
+  lg: { icon: "h-10 w-10", text: "text-2xl font-bold", imageSize: "40px" },
 };
 
-// Fallback icon when no logo provided
 const DefaultIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
@@ -46,19 +34,22 @@ const DefaultIcon = ({ className }: { className?: string }) => (
 );
 
 /**
- * Logo component with automatic fallbacks
+ * Logo component with automatic fallbacks.
+ * Falls back to brand initial if no logo image is provided or fails to load.
  */
 export function Logo({
   className,
   size = "md",
   showText = true,
   priority = false,
+  href = "/",
 }: LogoProps) {
   const [imageError, setImageError] = useState(false);
+  const sizeConfig = sizes[size];
 
   return (
     <Link
-      href="/"
+      href={href}
       className={cn(
         "flex items-center gap-2 transition-opacity hover:opacity-80",
         className
@@ -66,23 +57,23 @@ export function Logo({
       aria-label={`${BRAND_NAME} home page`}
     >
       {LOGO_PATH && !imageError ? (
-        <div className={cn("relative", sizes[size].icon)}>
+        <div className={cn("relative flex-shrink-0", sizeConfig.icon)}>
           <Image
             src={LOGO_PATH}
-            alt={`${BRAND_NAME} logo`}
+            alt=""
             fill
             className="object-contain"
-            sizes={size === "lg" ? "48px" : "32px"}
+            sizes={sizeConfig.imageSize}
             priority={priority}
             onError={() => setImageError(true)}
           />
         </div>
       ) : (
-        <DefaultIcon className={sizes[size].icon} />
+        <DefaultIcon className={cn("flex-shrink-0", sizeConfig.icon)} />
       )}
 
       {showText && (
-        <span className={cn("text-foreground", sizes[size].text)}>
+        <span className={cn("text-foreground", sizeConfig.text)}>
           {BRAND_NAME}
         </span>
       )}
