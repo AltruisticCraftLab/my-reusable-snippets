@@ -1,31 +1,30 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { BRAND_NAME, LOGO_PATH } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   showText?: boolean;
   priority?: boolean;
   href?: string;
 }
 
-const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "YourSaaS";
-const LOGO_PATH = process.env.NEXT_PUBLIC_LOGO_PATH || null;
-
 const sizes = {
-  sm: { icon: "h-6 w-6", text: "text-lg font-semibold", imageSize: "24px" },
-  md: { icon: "h-8 w-8", text: "text-xl font-bold", imageSize: "32px" },
-  lg: { icon: "h-10 w-10", text: "text-2xl font-bold", imageSize: "40px" },
+  sm: { icon: 'h-6 w-6', text: 'text-lg font-semibold', imageSize: '24px' },
+  md: { icon: 'h-8 w-8', text: 'text-xl font-bold', imageSize: '32px' },
+  lg: { icon: 'h-10 w-10', text: 'text-2xl font-bold', imageSize: '40px' },
 };
 
 const DefaultIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
-      "bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-bold",
+      'bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-bold',
       className
     )}
   >
@@ -39,10 +38,10 @@ const DefaultIcon = ({ className }: { className?: string }) => (
  */
 export function Logo({
   className,
-  size = "md",
+  size = 'md',
   showText = true,
   priority = false,
-  href = "/",
+  href = '/',
 }: LogoProps) {
   const [imageError, setImageError] = useState(false);
   const sizeConfig = sizes[size];
@@ -51,13 +50,13 @@ export function Logo({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-2 transition-opacity hover:opacity-80",
+        'flex items-center gap-2 transition-opacity hover:opacity-80',
         className
       )}
       aria-label={`${BRAND_NAME} home page`}
     >
       {LOGO_PATH && !imageError ? (
-        <div className={cn("relative flex-shrink-0", sizeConfig.icon)}>
+        <div className={cn('relative flex-shrink-0', sizeConfig.icon)}>
           <Image
             src={LOGO_PATH}
             alt=""
@@ -69,11 +68,11 @@ export function Logo({
           />
         </div>
       ) : (
-        <DefaultIcon className={cn("flex-shrink-0", sizeConfig.icon)} />
+        <DefaultIcon className={cn('flex-shrink-0', sizeConfig.icon)} />
       )}
 
       {showText && (
-        <span className={cn("text-foreground", sizeConfig.text)}>
+        <span className={cn('text-foreground', sizeConfig.text)}>
           {BRAND_NAME}
         </span>
       )}
