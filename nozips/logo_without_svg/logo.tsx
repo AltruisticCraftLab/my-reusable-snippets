@@ -24,7 +24,7 @@ const sizes = {
 const DefaultIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
-      'bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-bold',
+      'bg-primary text-primary-foreground flex items-center justify-center rounded-lg font-bold',
       className
     )}
   >
