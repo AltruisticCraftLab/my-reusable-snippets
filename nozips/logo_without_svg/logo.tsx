@@ -7,6 +7,10 @@ import Link from 'next/link';
 import { BRAND_NAME, LOGO_PATH } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
+// ========================================
+// TYPES AND INTERFACES
+// ========================================
+
 interface LogoProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg';
@@ -16,29 +20,37 @@ interface LogoProps {
   href?: string;
 }
 
+// ========================================
+// CONSTANTS
+// ========================================
+
 const sizes = {
   sm: {
-    icon: 'h-5 w-5 sm:h-6 sm:w-6',
-    text: 'text-sm sm:text-base md:text-lg font-semibold',
-    imageSizes: '(max-width: 640px) 20px, 24px',
-  },
-  md: {
     icon: 'h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8',
-    text: 'text-base sm:text-lg md:text-xl font-bold',
+    text: 'text-base sm:text-lg md:text-xl font-semibold',
     imageSizes: '(max-width: 640px) 24px, (max-width: 768px) 28px, 32px',
   },
-  lg: {
+  md: {
     icon: 'h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10',
     text: 'text-lg sm:text-xl md:text-2xl font-bold',
     imageSizes: '(max-width: 640px) 32px, (max-width: 768px) 36px, 40px',
   },
+  lg: {
+    icon: 'h-10 w-10 sm:h-11 sm:w-11 md:h-12 md:w-12',
+    text: 'text-xl sm:text-2xl md:text-3xl font-bold',
+    imageSizes: '(max-width: 640px) 40px, (max-width: 768px) 44px, 48px',
+  },
 };
+
+// ========================================
+// HELPER COMPONENTS
+// ========================================
 
 const DefaultIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
       'bg-primary text-primary-foreground flex items-center justify-center rounded-lg font-bold',
-      'text-xs sm:text-sm md:text-base',
+      'text-xl sm:text-2xl md:text-3xl',
       className
     )}
   >
@@ -46,6 +58,7 @@ const DefaultIcon = ({ className }: { className?: string }) => (
   </div>
 );
 
+// ---------------------- Logo Component ----------------------
 /**
  * Logo component with automatic fallbacks and responsive design.
  * Falls back to brand initial if no logo image is provided or fails to load.
@@ -59,8 +72,29 @@ export function Logo({
   priority = false,
   href = '/',
 }: LogoProps) {
+  // ========================================
+  // STATE AND HOOKS
+  // ========================================
+
   const [imageError, setImageError] = useState(false);
+
+  // ========================================
+  // COMPUTED VALUES
+  // ========================================
+
   const sizeConfig = sizes[size];
+
+  // ========================================
+  // EVENT HANDLERS
+  // ========================================
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  // ========================================
+  // RENDER
+  // ========================================
 
   return (
     <Link
@@ -73,6 +107,7 @@ export function Logo({
       )}
       aria-label={`${BRAND_NAME} home page`}
     >
+      {/* Logo Icon/Image */}
       {LOGO_PATH && !imageError ? (
         <div className={cn('relative flex-shrink-0', sizeConfig.icon)}>
           <Image
@@ -82,13 +117,14 @@ export function Logo({
             className="object-contain"
             sizes={sizeConfig.imageSizes}
             priority={priority}
-            onError={() => setImageError(true)}
+            onError={handleImageError}
           />
         </div>
       ) : (
         <DefaultIcon className={cn('flex-shrink-0', sizeConfig.icon)} />
       )}
 
+      {/* Brand Text */}
       {showText && (
         <span
           className={cn(
