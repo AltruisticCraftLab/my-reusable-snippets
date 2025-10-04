@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { BRAND_NAME, LOGO_PATH } from '@/lib/constants';
+import { BRAND } from '@/config/index';
 import { cn } from '@/lib/utils';
 
 // ========================================
@@ -54,7 +54,7 @@ const DefaultIcon = ({ className }: { className?: string }) => (
       className
     )}
   >
-    {BRAND_NAME.charAt(0).toUpperCase()}
+    {BRAND.name.charAt(0).toUpperCase()}
   </div>
 );
 
@@ -105,14 +105,14 @@ export function Logo({
         'min-h-[44px] touch-manipulation py-1',
         className
       )}
-      aria-label={`${BRAND_NAME} home page`}
+      aria-label={`${BRAND.name} home page`}
     >
       {/* Logo Icon/Image */}
-      {LOGO_PATH && !imageError ? (
+      {BRAND.logoPath && !imageError ? (
         <div className={cn('relative flex-shrink-0', sizeConfig.icon)}>
           <Image
-            src={LOGO_PATH}
-            alt={`${BRAND_NAME} logo`}
+            src={BRAND.logoPath}
+            alt={`${BRAND.name} logo`}
             fill
             className="object-contain"
             sizes={sizeConfig.imageSizes}
@@ -133,7 +133,7 @@ export function Logo({
             hideTextOnMobile && 'hidden sm:inline'
           )}
         >
-          {BRAND_NAME}
+          {BRAND.name}
         </span>
       )}
     </Link>
