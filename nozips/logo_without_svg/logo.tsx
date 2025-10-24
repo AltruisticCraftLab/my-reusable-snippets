@@ -102,14 +102,14 @@ export function Logo({
       className={cn(
         'flex items-center gap-2 rounded-sm transition-opacity hover:opacity-80 sm:gap-3',
         'focus-visible:ring-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-        'min-h-[44px] touch-manipulation py-1',
+        'min-h-11 touch-manipulation py-1',
         className
       )}
       aria-label={`${BRAND.name} home page`}
     >
       {/* Logo Icon/Image */}
       {BRAND.logoPath && !imageError ? (
-        <div className={cn('relative flex-shrink-0', sizeConfig.icon)}>
+        <div className={cn('relative shrink-0', sizeConfig.icon)}>
           <Image
             src={BRAND.logoPath}
             alt={`${BRAND.name} logo`}
@@ -121,7 +121,7 @@ export function Logo({
           />
         </div>
       ) : (
-        <DefaultIcon className={cn('flex-shrink-0', sizeConfig.icon)} />
+        <DefaultIcon className={cn('shrink-0', sizeConfig.icon)} />
       )}
 
       {/* Brand Text */}
